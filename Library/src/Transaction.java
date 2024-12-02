@@ -58,10 +58,12 @@ public class Transaction {
 		return sdf.format(new Date());
 	}
 	
+	// Save the transactions into a text file
 	private void saveTransaction(String transactionDetails) 
 	{
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("transactions.txt", true)))
 			{
+				// Write the transaction details into the text file
 				writer.write(transactionDetails); 
 				writer.newLine();
 			} catch (IOException e)
