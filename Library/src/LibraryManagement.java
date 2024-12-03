@@ -60,18 +60,25 @@ public class LibraryManagement {
 
 				scanner.nextLine();
 				
-				Book newBook = new Book(id, title);
-				successful = library.addBook(newBook);
-				
-				// Display appropriate message for book being added
-				if (successful == true)
+				try 
 				{
-					System.out.println("Book added to library successfully.");
-				}
-				else
+					Book newBook = new Book(id, title);
+					successful = library.addBook(newBook);
+					
+					// Display appropriate message for book being added
+					if (successful == true)
+					{
+						System.out.println("Book added to library successfully.");
+					}
+					else
+					{
+						System.out.println("Error: Book " + id + " already exists in the library.");
+					}
+				}catch (Exception e)
 				{
-					System.out.println("Error: Book " + id + " already exists in the library.");
+					System.out.println(e);
 				}
+			
 				break;
 			case 3:
 				System.out.println("\n--- Available Members ---");
