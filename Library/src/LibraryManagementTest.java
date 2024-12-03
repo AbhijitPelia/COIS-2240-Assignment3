@@ -5,20 +5,20 @@ import org.junit.Test;
 public class LibraryManagementTest {
 
 	@Test
-	// Test method to test the Book class for various cases of valid and non-valid IDs.
+	// Test method to test the Book class works as expected.
 	public void testBookId() 
 	{
 		try
 		{
 			// Validate the ID of boundary case 100
 			Book book1 = new Book (100, "Book 1");
-			assertEquals("Book 1 should have a ID of 100.", 100, book1.getId());
-			assertTrue("The ID of Book 1 should be valid.", book1.isValidId(book1.getId()));
+			assertEquals("Book 1 should have a ID of 100 but isn't.", 100, book1.getId());
+			assertTrue("The ID of Book 1 should be valid but isn't.", book1.isValidId(book1.getId()));
 			
 			// Validate the ID of boundary case 999
 			Book book2 = new Book (999, "Book 2");
-			assertEquals( "Book 2 should have a ID of 999.", 999, book2.getId());
-			assertTrue("The ID of Book 2 should be valid.", book2.isValidId(book2.getId()));
+			assertEquals( "Book 2 should have a ID of 999 but isn't.", 999, book2.getId());
+			assertTrue("The ID of Book 2 should be valid but isn't.", book2.isValidId(book2.getId()));
 			
 			// Validate the ID of boundary case 1000
 			Book book3 = new Book (1000, "Book 3");
@@ -38,5 +38,43 @@ public class LibraryManagementTest {
 		}
 		
 	}
-
+	
+	@Test
+	// Test method to validate that book borrowing and returning works as expected
+	public void testBorrowReturn()
+	{
+		try 
+		{
+			// Instantiate a Book object and Member object.
+			Book book = new Book(100, "CS");
+			Member member = new Member(1111, "John");
+			
+			// Make sure that the book is available
+			assertTrue("Book is not available.", book.isAvailable());
+			
+			// Ensure that borrowing is successful when the book is available
+			Transaction transaction = Transaction.getTransaction();
+			boolean successfulBorrow = transaction.borrowBook(book, member);
+			assertTrue("Borrowing was not successful", successfulBorrow);
+			assertFalse("The book is still available", book.isAvailable());
+			
+			// Ensure that borrowing is not successful when the book is not available
+			boolean successfulBorrow2 = transaction.borrowBook(book, member);
+			assertFalse("The book was able to be borrowed twice.", successfulBorrow2);
+			
+			// Ensure that returning is successful when the book is borrowed
+			boolean successfulReturn = transaction.returnBook(book, member);
+			assertTrue("The book was not returned successfully.", successfulReturn);
+			assertTrue("The book is not avaiable.", book.isAvailable());
+			
+			// Ensure that returning is not successful when the book is available.
+			boolean successfulReturn2 = transaction.returnBook(book, member);
+			assertFalse("The book was returned twice.", successfulReturn2);
+			
+		}catch (Exception e)
+		{
+			
+		}
+		
+	}
 }
