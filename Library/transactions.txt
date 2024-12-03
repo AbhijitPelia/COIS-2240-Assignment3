@@ -1,0 +1,2 @@
+2024-12-02 20:34:46 - Borrowing: abc borrowed xyz
+2024-12-02 20:34:49 - Returning: abc returned xyz

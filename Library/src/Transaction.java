@@ -1,6 +1,9 @@
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -70,5 +73,31 @@ public class Transaction {
 			{
 				System.out.println("Failed to save transaction");
 			}
+	}
+	
+	// Display the transaction history
+	public void displayTransactionHistory()
+	{
+		
+		try 
+		{
+			File file = new File ("transactions.txt");
+			Scanner scanner = new Scanner(file);
+			
+			System.out.println("Transaction History:\n");
+			
+			// Use the scanner tool to read each line of the file and display transactions
+			while (scanner.hasNextLine())
+			{
+				String transaction = scanner.nextLine();
+				System.out.println(transaction);
+			}
+			
+			scanner.close();
+			
+		} catch (FileNotFoundException e) // Catch the exception if the file does not exist
+		{
+			System.out.println("Sorry, no transaction history to display.");
+		}
 	}
 }
