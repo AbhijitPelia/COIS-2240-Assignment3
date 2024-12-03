@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
-
 import org.junit.Test;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 
 public class LibraryManagementTest {
 
@@ -41,40 +42,46 @@ public class LibraryManagementTest {
 	
 	@Test
 	// Test method to validate that book borrowing and returning works as expected
-	public void testBorrowReturn()
+	public void testBorrowReturn() throws Exception
 	{
-		try 
-		{
-			// Instantiate a Book object and Member object.
-			Book book = new Book(100, "CS");
-			Member member = new Member(1111, "John");
-			
-			// Make sure that the book is available
-			assertTrue("Book is not available.", book.isAvailable());
-			
-			// Ensure that borrowing is successful when the book is available
-			Transaction transaction = Transaction.getTransaction();
-			boolean successfulBorrow = transaction.borrowBook(book, member);
-			assertTrue("Borrowing was not successful", successfulBorrow);
-			assertFalse("The book is still available", book.isAvailable());
-			
-			// Ensure that borrowing is not successful when the book is not available
-			boolean successfulBorrow2 = transaction.borrowBook(book, member);
-			assertFalse("The book was able to be borrowed twice.", successfulBorrow2);
-			
-			// Ensure that returning is successful when the book is borrowed
-			boolean successfulReturn = transaction.returnBook(book, member);
-			assertTrue("The book was not returned successfully.", successfulReturn);
-			assertTrue("The book is not avaiable.", book.isAvailable());
-			
-			// Ensure that returning is not successful when the book is available.
-			boolean successfulReturn2 = transaction.returnBook(book, member);
-			assertFalse("The book was returned twice.", successfulReturn2);
-			
-		}catch (Exception e)
-		{
-			
-		}
+		// Instantiate a Book object and Member object.
+		Book book = new Book(100, "CS");
+		Member member = new Member(1111, "John");
 		
+		// Make sure that the book is available
+		assertTrue("Book is not available.", book.isAvailable());
+		
+		// Ensure that borrowing is successful when the book is available
+		Transaction transaction = Transaction.getTransaction();
+		boolean successfulBorrow = transaction.borrowBook(book, member);
+		assertTrue("Borrowing was not successful", successfulBorrow);
+		assertFalse("The book is still available", book.isAvailable());
+			
+		// Ensure that borrowing is not successful when the book is not available
+		boolean successfulBorrow2 = transaction.borrowBook(book, member);
+		assertFalse("The book was able to be borrowed twice.", successfulBorrow2);
+			
+		// Ensure that returning is successful when the book is borrowed
+		boolean successfulReturn = transaction.returnBook(book, member);
+		assertTrue("The book was not returned successfully.", successfulReturn);
+		assertTrue("The book is not avaiable.", book.isAvailable());
+			
+		// Ensure that returning is not successful when the book is available.
+		boolean successfulReturn2 = transaction.returnBook(book, member);
+		assertFalse("The book was returned twice.", successfulReturn2);
+	}
+	
+	@Test
+	// Test method to validate that the Transaction class enforces Singleton behavior
+	public void testSingletonTransaction() throws Exception
+	{
+		// Return the constructor of the Transaction class
+		Constructor<Transaction> constructor = Transaction.class.getDeclaredConstructor();
+		
+		// Get the constructor's modifier
+		int i = constructor.getModifiers();
+		
+		// Ensure that constructor's modifier is equal to Modifier.PRIVATE
+		assertEquals("The Transaction class does not implement Singleton behavior.", i, Modifier.PRIVATE);
 	}
 }
