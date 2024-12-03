@@ -6,13 +6,33 @@ public class Library {
 	private List<Book> books = new ArrayList<Book>();
 
 	// Add a new member to the library
-	public void addMember(Member member) {
-		members.add(member);
+	public boolean addMember(Member member) {
+		// Check if the member already exists 
+		if (findMemberById(member.getId()) == null)
+		{
+			// Add member and return true if the member does not exist
+			members.add(member);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	// Add a new book to the library
-	public void addBook(Book book) {
-		books.add(book);
+	public boolean addBook(Book book) {
+		// Check if the book already exists
+		if (findBookById(book.getId()) == null)
+		{
+			// Add book and return true if the book does not exist
+			books.add(book);
+			return true; 
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	// Find a member by ID
